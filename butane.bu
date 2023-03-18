@@ -1,0 +1,12 @@
+variant: fcos
+version: 1.4.0
+passwd:
+  users:
+    - name: core
+      ssh_authorized_keys:
+        - ssh-rsa AAAAAA....
+      home_dir: /home/core
+      no_create_home: false
+      groups:
+        - wheel
+      shell: /bin/bash
