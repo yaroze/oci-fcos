@@ -5,3 +5,6 @@ ignition.ign
 terraform/.terraform*
 terraform/terraform.tfstate*
 terraform/terraform.tfvars
+build_guestfish.log
+stable.json
+butane.bu
