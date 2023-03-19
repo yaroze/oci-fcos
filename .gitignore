@@ -2,3 +2,6 @@
 ignition.ign
 *.qcow2
 *.xz
+terraform/.terraform*
+terraform/terraform.tfstate*
+terraform/terraform.tfvars
