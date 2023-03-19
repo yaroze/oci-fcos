@@ -1,0 +1,7 @@
+---
+- name: Calling Role
+  hosts: all
+  become: true
+
+  roles:
+    - oci-fcos
