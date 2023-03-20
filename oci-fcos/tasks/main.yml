@@ -1,2 +1,16 @@
----
-# tasks file for oci-fcos
+- name: Generate an ignition file
+  become: false
+  collections:
+    - containers.podman
+  podman_container:
+    name: ignition
+    image: quay.io/coreos/butane:release
+    command: ["--pretty","/tmp/butane.bu","-o","/tmp/ignition.ign"]
+    state: started
+    recreate: true
+    auto_remove: true
+    volumes:
+      - "{{ playbook_dir }}:/tmp:z"
+  tags:
+    - ignition
+

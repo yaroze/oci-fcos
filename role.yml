@@ -1,7 +1,6 @@
 ---
 - name: Calling Role
-  hosts: all
+  hosts: localhost
   become: true
-
   roles:
     - oci-fcos
