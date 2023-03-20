@@ -2,7 +2,7 @@ galaxy_info:
   author: Pedro F
   description: This Ansible role is used to download and verify the lastest image of Fedora CoreOS (aarch64), patch it with a custom ignition file and create a VM on Oracle Cloud.
   
-    license: GPL-3.0-only
+  license: GPL-3.0-only
 
   min_ansible_version: 2.9
 

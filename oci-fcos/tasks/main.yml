@@ -78,3 +78,33 @@
   fail:
     msg: sha256sum of decompressed image mismatch - {{ decompressed_img.stat.checksum }} is different from {{ right_decompressed_chksum }}
   when: right_decompressed_chksum != decompressed_img.stat.checksum
+
+- name: Create libguestfs container
+  podman_image:
+    name: guestfish
+    path: "{{ playbook_dir }}"
+    build:
+      format: docker
+  tags: guestfish_build
+
+- name: Inject ignition file
+  become: false
+  collections:
+    - containers.podman
+  podman_container:
+    name: guestfish
+    image: guestfish
+    workdir: /tmp
+    command: ["/root/guestfish.sh"]
+    state: started
+    recreate: true
+    auto_remove: true
+    volumes:
+      - "{{ playbook_dir }}:/tmp:z"
+  tags:
+    - guestfish_run
+
+- name: Apply Terraform configuration
+  terraform:
+    project_path: "{{ playbook_dir }}/../terraform"
+    state: present
