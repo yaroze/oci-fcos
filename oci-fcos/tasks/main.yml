@@ -36,14 +36,18 @@
     checksum_algorithm: sha256
   register: compressed_img
 
+- name: test
+  debug:
+    msg: "{{ stable_list.json | json_query('architectures.aarch64.artifacts.qemu.formats.\"qcow2.xz\".disk.sha256') }}"
+  register: cksum_compress
+
 - name: Get compressed image
   get_url:
     url: "{{ stable_list.json | json_query('architectures.aarch64.artifacts.qemu.formats.\"qcow2.xz\".disk.location') }}"
     dest: "fcos.qcow2.xz"
-    checksum: "{{ stable_list.json | json_query('architectures.aarch64.artifacts.qemu.formats.\"qcow2.xz\".disk.sha256') }}"
+    #checksum: sha256:{{ cksum_compress }}
     mode: '0600'
     validate_certs: yes
   register: download_result
   when:
-    - (not decompressed_img.exists and not compressed_img.exists) or (compressed_img.checksum != {{ stable_list.json | json_query('architectures.aarch64.artifacts.qemu.formats.\"qcow2.xz\".disk.sha256') }})
-    
+    - (not decompressed_img.stat.exists and not compressed_img.stat.exists) or (compressed_img.stat.sha256 != stable_list.json | json_query('architectures.aarch64.artifacts.qemu.formats."qcow2.xz".disk.sha256'))
