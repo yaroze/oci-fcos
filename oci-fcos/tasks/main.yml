@@ -14,3 +14,36 @@
   tags:
     - ignition
 
+
+- name: Get URL for stable images
+  uri:
+    url: https://builds.coreos.fedoraproject.org/streams/stable.json
+    method: GET
+  register: stable_list
+  tags: url
+
+- name: Test if decompressed image exists and is of right cksum
+  stat:
+    path: "{{ playbook_dir }}/fcos.qcow2"
+    get_checksum: true
+    checksum_algorithm: sha256
+  register: decompressed_img
+
+- name: Test if compressed image exists and is of right cksum
+  stat:
+    path: "fcos.qcow2.xz"
+    get_checksum: true
+    checksum_algorithm: sha256
+  register: compressed_img
+
+- name: Get compressed image
+  get_url:
+    url: "{{ stable_list.json | json_query('architectures.aarch64.artifacts.qemu.formats.\"qcow2.xz\".disk.location') }}"
+    dest: "fcos.qcow2.xz"
+    checksum: "{{ stable_list.json | json_query('architectures.aarch64.artifacts.qemu.formats.\"qcow2.xz\".disk.sha256') }}"
+    mode: '0600'
+    validate_certs: yes
+  register: download_result
+  when:
+    - (not decompressed_img.exists and not compressed_img.exists) or (compressed_img.checksum != {{ stable_list.json | json_query('architectures.aarch64.artifacts.qemu.formats.\"qcow2.xz\".disk.sha256') }})
+    
