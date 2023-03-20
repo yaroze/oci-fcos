@@ -14,7 +14,7 @@ provider "oci" {
   region = var.region
 }
 
-resource "oci_core_instance" "example" {
+resource "oci_core_instance" "fcos_instance" {
   availability_domain = var.availability_domain
   compartment_id = var.compartment_id
   display_name = "example-instance"
@@ -31,7 +31,8 @@ resource "oci_core_instance" "example" {
 
   source_details {
     source_type = "image"
-    source_id = var.image_id
+    #source_id = var.image_id
+    source_id = oci_core_image.fcosImage.id
   }
 
   create_vnic_details {
@@ -48,4 +49,3 @@ resource "oci_core_instance" "example" {
     network_type = "PARAVIRTUALIZED"
   }
 }
-
