@@ -44,8 +44,4 @@ resource "oci_core_instance" "fcos_instance" {
     delete = "30m"
   }
 
-  launch_options {
-    firmware = "UEFI_64"
-    network_type = "PARAVIRTUALIZED"
-  }
 }
