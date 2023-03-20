@@ -99,6 +99,7 @@
     state: started
     recreate: true
     auto_remove: true
+    detach: false
     volumes:
       - "{{ playbook_dir }}:/tmp:z"
   tags:
@@ -106,5 +107,5 @@
 
 - name: Apply Terraform configuration
   terraform:
-    project_path: "{{ playbook_dir }}/../terraform"
+    project_path: "{{ playbook_dir }}/terraform"
     state: present

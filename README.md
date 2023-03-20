@@ -6,6 +6,7 @@ It relies on Podman, so it might not work with Docker.
 
 After preparing the qcow2 image, it creates a bucket on Oracle Cloud, uploads the image there and spins a VM with that image.
 
+This is a nice automation to run on Oracle's OCI Developer VM's.
 
 ### TODO:
 Create terraform to upload this to OCI.
