@@ -18,6 +18,7 @@ resource "oci_core_image" "fcosImage" {
 
     # Optional
     display_name = "Fedora CoreOS Image"
+    launch_mode = "PARAVIRTUALIZED"
 
 }
 
