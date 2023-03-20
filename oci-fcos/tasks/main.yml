@@ -22,12 +22,26 @@
   register: stable_list
   tags: url
 
-- name: Test if decompressed image exists and is of right cksum
+- name: Set facts
+  set_fact:
+    right_compressed_chksum: "{{ stable_list.json | json_query('architectures.aarch64.artifacts.qemu.formats.\"qcow2.xz\".disk.sha256') }}"
+    right_decompressed_chksum: "{{ stable_list.json | json_query('architectures.aarch64.artifacts.qemu.formats.\"qcow2.xz\".disk.\"uncompressed-sha256\"') }}"
+
+- debug:
+    msg: right_compressed_chksum {{ right_compressed_chksum }}
+
+- debug:
+    msg: right_decompressed_chksum {{ right_decompressed_chksum }}
+
+- name: Check if there is a decompressed image already and has the correct cksum
   stat:
     path: "{{ playbook_dir }}/fcos.qcow2"
     get_checksum: true
     checksum_algorithm: sha256
   register: decompressed_img
+
+- debug:
+    msg: decompressed_img "{{ decompressed_img.stat.exists }}"
 
 - name: Test if compressed image exists and is of right cksum
   stat:
@@ -36,18 +50,31 @@
     checksum_algorithm: sha256
   register: compressed_img
 
-- name: test
-  debug:
-    msg: "{{ stable_list.json | json_query('architectures.aarch64.artifacts.qemu.formats.\"qcow2.xz\".disk.sha256') }}"
-  register: cksum_compress
-
-- name: Get compressed image
+- name: Get compressed image if it doesn't already exist
   get_url:
     url: "{{ stable_list.json | json_query('architectures.aarch64.artifacts.qemu.formats.\"qcow2.xz\".disk.location') }}"
-    dest: "fcos.qcow2.xz"
-    #checksum: sha256:{{ cksum_compress }}
+    dest: "{{ playbook_dir }}/fcos.qcow2.xz"
+    checksum: "sha256:{{ right_compressed_chksum }}"
     mode: '0600'
     validate_certs: yes
   register: download_result
   when:
-    - (not decompressed_img.stat.exists and not compressed_img.stat.exists) or (compressed_img.stat.sha256 != stable_list.json | json_query('architectures.aarch64.artifacts.qemu.formats."qcow2.xz".disk.sha256'))
+    # Run only if we have a wrong sha256 or if we dong have any image
+    - (compressed_img.stat.exists and compressed_img.stat.checksum != right_compressed_chksum) or
+      (not compressed_img.stat.exists and not decompressed_img.stat.exists)
+
+- name: Decompress image 
+  shell: xz -d "{{ playbook_dir }}/fcos.qcow2.xz"
+  when: (not decompressed_img.stat.exists)
+
+- name: Get sha256sum of decompressed image
+  stat:
+    path: "{{ playbook_dir }}/fcos.qcow2"
+    get_checksum: true
+    checksum_algorithm: sha256
+  register: decompressed_img
+
+- name: Check sha256sum of decompressed image
+  fail:
+    msg: sha256sum of decompressed image mismatch - {{ decompressed_img.stat.checksum }} is different from {{ right_decompressed_chksum }}
+  when: right_decompressed_chksum != decompressed_img.stat.checksum
