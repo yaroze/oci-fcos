@@ -2,6 +2,7 @@
 resource "oci_core_image" "fcosImage" {
     # Required
     compartment_id = var.compartment_id
+
     image_source_details {
         # Required
         source_type = "objectStorageTuple"
@@ -17,4 +18,11 @@ resource "oci_core_image" "fcosImage" {
 
     # Optional
     display_name = "Fedora CoreOS Image"
+
+}
+
+resource "oci_core_shape_management" "compatible_shape" {
+  compartment_id = var.compartment_id
+  image_id       = oci_core_image.fcosImage.id
+  shape_name     = "VM.Standard.A1.Flex"
 }
