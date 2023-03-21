@@ -11,12 +11,11 @@ After preparing the qcow2 image, it creates a bucket on Oracle Cloud, uploads th
 This is a nice automation to run on Oracle's OCI Developer VM's.
 
 ### TODO:
-```
+
 - [x] Create terraform to upload this to OCI
 - [x] Create Ansible to run the image related stuff
 - [ ] Deploy with GitHub Actions
-- [ ] Do some proper documentation...
-```
+- [ ] Do some proper documentation (requirements, etc)...
 
 
 
