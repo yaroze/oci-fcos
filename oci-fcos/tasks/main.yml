@@ -95,7 +95,7 @@
     name: guestfish
     image: guestfish
     workdir: /tmp
-    command: ["/root/guestfish.sh"]
+    command: ["/tmp/guestfish.sh"]
     state: started
     recreate: true
     auto_remove: true
