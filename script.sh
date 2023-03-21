@@ -17,7 +17,7 @@ get_sha256sum(){
 }
 
 echo -n "Generating ignition file out of butane..."
-docker  run -i -q --rm quay.io/coreos/butane:release --pretty --strict < butane.bu > ignition.ign
+docker  run -i  --rm quay.io/coreos/butane:release --pretty --strict < butane.bu > config.ign
 check_status
 
 
@@ -36,7 +36,7 @@ if [ ! -f fcos.qcow2 ]; then
         curl -s $URL -o fcos.qcow2.xz
         check_status
         echo -n "Decompressing... ⏳"
-        xz -d fcos.qcow2.xz
+        xz -k -d fcos.qcow2.xz
         check_status
     else
         echo -n "Checking sha256sum for compressed image... ⏳"
@@ -70,4 +70,4 @@ docker build . -t guestfish > build_guestfish.log 2>&1
 check_status
 
 echo "Launching docker container to inject ignition file... ⏳"
-docker run -v$PWD:/root/fcos:z -w /root/fcos guestfish /root/guestfish.sh
+docker run -v$PWD:/root:z -w /root/fcos guestfish /root/guestfish.sh
