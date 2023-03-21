@@ -1,12 +1,17 @@
 #!/bin/bash
+fs_boot_path=$(virt-filesystems -a fcos.qcow2 -l | grep boot | awk -F ' ' '{print $1}')
+
 /usr/bin/guestfish <<EOF
 echo "Adding qcow2 file"
 add fcos.qcow2
 echo "Opening qcow2 file..."
 run
 echo "Mounting..."
-mount /dev/sda3 /
+mount "$fs_boot_path" /
+mkdir /ignition
 echo "Uploading ignition..."
-upload ignition.ign /ignition.firstboot
+copy-in config.ign /ignition/
 echo "Done!"
+unmount-all 
+exit
 EOF

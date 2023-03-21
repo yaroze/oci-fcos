@@ -5,7 +5,7 @@
   podman_container:
     name: ignition
     image: quay.io/coreos/butane:release
-    command: ["--pretty","/tmp/butane.bu","-o","/tmp/ignition.ign"]
+    command: ["--pretty","/tmp/butane.bu","-o","/tmp/config.ign"]
     state: started
     recreate: true
     auto_remove: true
