@@ -9,3 +9,4 @@ build_guestfish.log
 stable.json
 butane.bu
 butane.bu
+terraform.tfstate*

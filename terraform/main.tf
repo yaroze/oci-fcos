@@ -17,9 +17,8 @@ provider "oci" {
 resource "oci_core_instance" "fcos_instance" {
   availability_domain = var.availability_domain
   compartment_id = var.compartment_id
-  display_name = "example-instance"
+  display_name = "Fedora CoreOS"
   shape = "VM.Standard.A1.Flex"
-
   shape_config {
     ocpus = 1
     memory_in_gbs = 1
