@@ -1,3 +1,8 @@
+- name: Get current Git branch
+  shell: cd {{ playbook_dir }} && git branch --show-current
+  register: current_branch
+
+
 - name: Generate an ignition file
   become: false
   collections:
@@ -93,7 +98,7 @@
     - containers.podman
   podman_container:
     name: guestfish
-    image: guestfish
+    image: ghcr.io/yaroze/guestfish:{{ current_branch }}
     workdir: /tmp
     command: ["/tmp/guestfish.sh"]
     state: started
