@@ -88,9 +88,6 @@ jobs:
         # against the sigstore community Fulcio instance.
         run: echo "${{ steps.meta.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push.outputs.digest }}
 
-      - name: Inspect
-        run: |
-          docker image inspect ${{ steps.meta.outputs.tags }}
   build-arm64:
     runs-on: ubuntu-latest
     permissions:
@@ -144,7 +141,3 @@ jobs:
           COSIGN_EXPERIMENTAL: "true"
 
         run: echo "${{ steps.meta.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push.outputs.digest }}
-
-      - name: Inspect
-        run: |
-          docker image inspect ${{ steps.meta.outputs.tags }}
