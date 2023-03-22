@@ -63,6 +63,8 @@ Additionally, the following collection should be installed:
 Deploy it with:
 `ansible-galaxy collection install containers.podman`
 
+I developed it on an Oracle Linux 8.5 VM, so it should work fine on Red Hat or Fedora, or a Debian based distro (although some changes might be necessary).
+
 ### TODO:
 
 - [x] Create terraform to upload this to OCI
