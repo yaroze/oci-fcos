@@ -1,7 +1,7 @@
 - name: Get current Git branch
   shell: cd {{ playbook_dir }} && git branch --show-current
   register: current_branch
-
+  check_mode: no
 
 - name: Generate an ignition file
   become: false
@@ -31,12 +31,7 @@
   set_fact:
     right_compressed_chksum: "{{ stable_list.json | json_query('architectures.aarch64.artifacts.qemu.formats.\"qcow2.xz\".disk.sha256') }}"
     right_decompressed_chksum: "{{ stable_list.json | json_query('architectures.aarch64.artifacts.qemu.formats.\"qcow2.xz\".disk.\"uncompressed-sha256\"') }}"
-
-- debug:
-    msg: right_compressed_chksum {{ right_compressed_chksum }}
-
-- debug:
-    msg: right_decompressed_chksum {{ right_decompressed_chksum }}
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Check if there is a decompressed image already and has the correct cksum
   stat:
@@ -44,9 +39,6 @@
     get_checksum: true
     checksum_algorithm: sha256
   register: decompressed_img
-
-- debug:
-    msg: decompressed_img "{{ decompressed_img.stat.exists }}"
 
 - name: Test if compressed image exists and is of right cksum
   stat:
@@ -83,6 +75,7 @@
   fail:
     msg: sha256sum of decompressed image mismatch - {{ decompressed_img.stat.checksum }} is different from {{ right_decompressed_chksum }}
   when: right_decompressed_chksum != decompressed_img.stat.checksum
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Create libguestfs container
   podman_image:
@@ -98,7 +91,7 @@
     - containers.podman
   podman_container:
     name: guestfish
-    image: ghcr.io/yaroze/guestfish:{{ current_branch }}
+    image: ghcr.io/yaroze/guestfish:{{ current_branch.stdout }}
     workdir: /tmp
     command: ["/tmp/guestfish.sh"]
     state: started
