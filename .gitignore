@@ -11,3 +11,4 @@ butane.bu
 butane.bu
 terraform.tfstate*
 config.ign
+oci-fcos/inventory.yml
