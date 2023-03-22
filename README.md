@@ -1,3 +1,5 @@
+![Docker](https://github.com/yaroze/oci-fcos/actions/workflows/docker-publish.yml/badge.svg)
+
 
 # oci-fcos
 
