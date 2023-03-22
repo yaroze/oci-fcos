@@ -4,7 +4,8 @@ passwd:
   users:
     - name: core
       ssh_authorized_keys:
-        - ssh-rsa AAAAAA....
+        - ssh-rsa ***REMOVED***
+      password_hash: ***REMOVED***
       home_dir: /home/core
       no_create_home: false
       groups:
