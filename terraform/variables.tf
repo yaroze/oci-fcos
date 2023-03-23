@@ -41,3 +41,13 @@ variable "bucket_name" {
 variable "bucket_namespace" {
   type = string
 }
+
+variable "num_vms" {
+  type = string
+  default = "1"
+}
+
+variable "vm_prefix" {
+  type = string
+  default = "vm-"
+}
