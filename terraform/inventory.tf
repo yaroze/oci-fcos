@@ -1,10 +1,14 @@
 resource "local_file" "ansible_inventory" {
- content = templatefile("inventory.tmpl",
-    {
-     instance_ip   = oci_core_instance.fcos_instance.public_ip
-     instance_name = oci_core_instance.fcos_instance.display_name
-
+  filename = "inventory.yml"
+  content  = replace(yamlencode({
+    all = {
+      hosts = {
+        for host in oci_core_instance.fcos_instance : host.display_name => {
+          ansible_host = host.public_ip
+          ansible_ssh_extra_args = "-o StrictHostKeyChecking=no"
+          ansible_user = "core"
+        }
+      }
     }
-  )
-  filename = "inventory.txt"
+  }), "\"", "")
 }
