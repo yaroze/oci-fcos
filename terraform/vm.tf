@@ -1,9 +1,9 @@
 resource "oci_core_instance" "fcos_instance" {
-  count              = var.num_vms
-  display_name       = "${var.vm_prefix}${count.index+1 > 9 ? "" : "0"}${count.index+1}"
+  count               = var.num_vms
+  display_name        = "${var.vm_prefix}${count.index+1 > 9 ? "" : "0"}${count.index+1}"
   availability_domain = var.availability_domain
-  compartment_id = var.compartment_id
-  shape = "VM.Standard.A1.Flex"
+  compartment_id      = var.compartment_id
+  shape               = "VM.Standard.A1.Flex"
   shape_config {
     ocpus = 1
     memory_in_gbs = 1
@@ -15,8 +15,7 @@ resource "oci_core_instance" "fcos_instance" {
 
   source_details {
     source_type = "image"
-    #source_id = var.image_id
-    source_id = oci_core_image.fcosImage.id
+    source_id   = oci_core_image.fcosImage.id
   }
 
   create_vnic_details {
