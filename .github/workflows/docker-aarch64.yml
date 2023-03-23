@@ -14,7 +14,8 @@ env:
   IMAGE_NAME: ${{ github.repository_owner }}/guestfish
 jobs:
   build-aarch64:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
+    #runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
