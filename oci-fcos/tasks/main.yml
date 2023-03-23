@@ -103,3 +103,7 @@
   tags:
     - guestfish_run
 
+- name: Apply Terraform configuration
+  terraform:
+    project_path: "{{ playbook_dir }}/terraform"
+    state: present
