@@ -77,13 +77,13 @@
   when: right_decompressed_chksum != decompressed_img.stat.checksum
   ignore_errors: "{{ ansible_check_mode }}"
 
-- name: Create libguestfs container
-  podman_image:
-    name: guestfish
-    path: "{{ playbook_dir }}"
-    build:
-      format: docker
-  tags: guestfish_build
+#- name: Create libguestfs container
+#  podman_image:
+#    name: guestfish
+#    path: "{{ playbook_dir }}"
+#    build:
+#      format: docker
+#  tags: guestfish_build
 
 - name: Inject ignition file
   become: false
