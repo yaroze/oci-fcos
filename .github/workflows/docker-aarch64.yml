@@ -49,11 +49,11 @@ jobs:
 
       - name: Build Docker image
         id: build
-        run: podman build . -t ${IMAGE_NAME}:${{ steps.meta.outputs.tags }}
+        run: podman build . -t ${{ steps.meta.outputs.tags }}
 
       - name: Push Docker image
         id: push
-        run: podman push ${IMAGE_NAME}:${{ steps.meta.outputs.tags }}
+        run: podman push ${{ steps.meta.outputs.tags }}
 
       - name: Sign the published Docker image
         if: ${{ github.event_name != 'pull_request' }}
