@@ -49,22 +49,11 @@ jobs:
 
       - name: Build Docker image
         id: build
-        run: podman build "${{ context }}" -t ${IMAGE_NAME}:${{ steps.meta.outputs.tags }}
-
+        run: podman build . -t ${IMAGE_NAME}:${{ steps.meta.outputs.tags }}
 
       - name: Push Docker image
         id: push
         run: podman push ${IMAGE_NAME}:${{ steps.meta.outputs.tags }}
-        #with:
-        #  context: .
-        #  push: ${{ github.event_name != 'pull_request' }}
-        #  tags: ${{ steps.meta.outputs.tags }}
-        #  labels: ${{ steps.meta.outputs.labels }}
-        #  cache-from: type=gha
-        #  cache-to: type=gha,mode=max
-        #  platforms: linux/arm64
-      #uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
-
 
       - name: Sign the published Docker image
         if: ${{ github.event_name != 'pull_request' }}
