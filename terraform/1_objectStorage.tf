@@ -1,6 +1,6 @@
 resource "oci_objectstorage_bucket" "newBucket" {
     #Required
-    compartment_id = var.compartment_id
+    compartment_id = oci_identity_compartment.fcos_compartment.id
     name = var.bucket_name
     namespace = var.bucket_namespace
 
