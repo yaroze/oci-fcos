@@ -1,7 +1,13 @@
 - name: Get current Git branch
   shell: cd {{ playbook_dir }} && git branch --show-current
-  register: current_branch
+  register: container_tag
   check_mode: no
+  tags: test
+
+- name: Set tag to "latest" when branch is "main"
+  set_fact:
+    container_tag: "latest"
+  when: container_tag == "main"
 
 - name: Generate an ignition file
   become: false
@@ -91,17 +97,18 @@
     - containers.podman
   podman_container:
     name: guestfish
-    image: ghcr.io/yaroze/guestfish:{{ current_branch.stdout }}
-    workdir: /tmp
-    command: ["/tmp/guestfish.sh"]
+    image: ghcr.io/yaroze/guestfish:{{ container_tag.stdout | replace( "/", "-") }}
+    workdir: /image
+    command: ["/image/guestfish.sh"]
     state: started
     recreate: true
     auto_remove: true
     detach: false
     volumes:
-      - "{{ playbook_dir }}:/tmp:z"
+      - "{{ playbook_dir }}:/image:z"
   tags:
     - guestfish_run
+    - test
 
 - name: Apply Terraform configuration
   terraform:
