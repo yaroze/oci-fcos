@@ -51,7 +51,7 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ github.repository_owner }}/guestfish:latest
+          tags: ghcr.io/${{ github.repository_owner }}/guestfish:latest
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -72,9 +72,16 @@ jobs:
           platforms: linux/aarch64
         if: github.ref_name != 'main'
 
-      - name: Sign the published Docker image
-        if: ${{ github.event_name != 'pull_request' }}
+      - name: Sign the published Docker image (latest)
+        if: ${{ github.event_name != 'pull_request' && github.ref_name == 'main' }}
         env:
           COSIGN_EXPERIMENTAL: "true"
 
-        run: echo "${{ steps.meta.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push.outputs.digest }}
+        run: echo "ghcr.io/${{ github.repository_owner }}/guestfish:latest" | xargs -I {} cosign sign {}@${{ steps.build-and-push-latest.outputs.digest }}
+
+      - name: Sign the published Docker image (testing)
+        if: ${{ github.event_name != 'pull_request' && github.ref_name != 'main' }}
+        env:
+          COSIGN_EXPERIMENTAL: "true"
+
+        run: echo "${{ steps.meta.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push-test.outputs.digest }}
