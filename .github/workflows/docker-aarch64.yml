@@ -45,8 +45,22 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      - name: Build and push Docker image
-        id: build-and-push
+      - name: Build and push Docker image to latest
+        id: build-and-push-latest
+        uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ github.repository_owner }}/guestfish:latest
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/aarch64
+        if: github.ref_name == 'main'
+
+          
+      - name: Build and push Docker image to test
+        id: build-and-push-test
         uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
         with:
           context: .
@@ -56,6 +70,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/aarch64
+        if: github.ref_name != 'main'
 
       - name: Sign the published Docker image
         if: ${{ github.event_name != 'pull_request' }}
