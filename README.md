@@ -1,11 +1,10 @@
 
-Stable
-[![Docker-aarch64](https://github.com/yaroze/oci-fcos/actions/workflows/docker-aarch64.yml/badge.svg)](https://github.com/yaroze/oci-fcos/actions/workflows/docker-aarch64.yml)
-[![Docker-amd64](https://github.com/yaroze/oci-fcos/actions/workflows/docker-amd64.yml/badge.svg)](https://github.com/yaroze/oci-fcos/actions/workflows/docker-amd64.yml)
+[![Docker-aarch64](https://github.com/yaroze/oci-fcos/actions/workflows/docker-aarch64.yml/badge.svg?branch=feat/multiple-vms)](https://github.com/yaroze/oci-fcos/actions/workflows/docker-aarch64.yml)/
+[![Docker-amd64](https://github.com/yaroze/oci-fcos/actions/workflows/docker-amd64.yml/badge.svg?branch=feat/multiple-vms)](https://github.com/yaroze/oci-fcos/actions/workflows/docker-amd64.yml)/
 
 gh_actions
-[![Docker-aarch64](https://github.com/yaroze/oci-fcos/actions/workflows/docker-aarch64.yml/badge.svg?branch=gh_actions)](https://github.com/yaroze/oci-fcos/actions/workflows/docker-aarch64.yml)
-[![Docker-amd64](https://github.com/yaroze/oci-fcos/actions/workflows/docker-aarch64.yml/badge.svg?branch=gh_actions)](https://github.com/yaroze/oci-fcos/actions/workflows/docker-amd64.yml)
+[![Docker-aarch64](https://github.com/yaroze/oci-fcos/actions/workflows/docker-aarch64.yml/badge.svg?branch=feat/multiple-vms)](https://github.com/yaroze/oci-fcos/actions/workflows/docker-aarch64.yml)/
+[![Docker-amd64](https://github.com/yaroze/oci-fcos/actions/workflows/docker-amd64.yml/badge.svg?branch=feat/multiple-vms)](https://github.com/yaroze/oci-fcos/actions/workflows/docker-amd64.yml)/
 
 # oci-fcos
 
