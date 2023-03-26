@@ -44,10 +44,16 @@ variable "bucket_namespace" {
 
 variable "num_vms" {
   type = string
-  default = "1"
+  default = "2"
 }
 
 variable "vm_prefix" {
   type = string
   default = "vm-"
+}
+
+
+variable "search_domain_names" {
+  type = list(string)
+  default = []
 }

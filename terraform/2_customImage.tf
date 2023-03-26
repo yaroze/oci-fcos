@@ -1,7 +1,7 @@
 
 resource "oci_core_image" "fcosImage" {
     # Required
-    compartment_id = var.compartment_id
+    compartment_id = oci_identity_compartment.fcos_compartment.id
 
     image_source_details {
         # Required

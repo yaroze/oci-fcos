@@ -2,7 +2,7 @@ resource "oci_core_instance" "fcos_instance" {
   count               = var.num_vms
   display_name        = "${var.vm_prefix}${count.index+1 > 9 ? "" : "0"}${count.index+1}"
   availability_domain = var.availability_domain
-  compartment_id      = var.compartment_id
+  compartment_id      = oci_identity_compartment.fcos_compartment.id
   shape               = "VM.Standard.A1.Flex"
   shape_config {
     ocpus = 1
@@ -19,7 +19,7 @@ resource "oci_core_instance" "fcos_instance" {
   }
 
   create_vnic_details {
-    subnet_id = var.subnet_id
+    subnet_id = oci_core_subnet.fcos_subnet.id
   }
 
   timeouts {
