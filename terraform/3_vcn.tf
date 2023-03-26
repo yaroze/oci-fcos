@@ -29,13 +29,13 @@ resource "oci_core_default_route_table" "fcos_route_table" {
     }
 }
 
-resource "oci_core_default_dhcp_options" "fcod_dhcp_options" {
+resource "oci_core_default_dhcp_options" "fcos_dhcp_options" {
     manage_default_resource_id = oci_core_vcn.fcos_vcn.default_dhcp_options_id
 
     compartment_id = oci_identity_compartment.fcos_compartment.id
 
     options {
-        #type = "DomainNameServer"
+        type = "DomainNameServer"
         #server_type = "VcnLocalPlusInternet"
 
         server_type = "CustomDnsServer"
