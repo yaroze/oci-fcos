@@ -1,0 +1,10 @@
+all:
+  hosts:
+    vm-01:
+      ansible_host: 130.61.174.93
+      ansible_ssh_extra_args: -o StrictHostKeyChecking=no
+      ansible_user: core
+    vm-02:
+      ansible_host: 130.61.171.70
+      ansible_ssh_extra_args: -o StrictHostKeyChecking=no
+      ansible_user: core
