@@ -16,12 +16,12 @@
   podman_container:
     name: ignition
     image: quay.io/coreos/butane:release
-    command: ["--pretty","/tmp/butane.bu","-o","/tmp/config.ign"]
+    command: ["--pretty","/workdir/butane.bu","-o","/workdir/config.ign"]
     state: started
     recreate: true
     auto_remove: true
     volumes:
-      - "{{ playbook_dir }}:/tmp:z"
+      - "{{ playbook_dir }}:/workdir:z"
   tags:
     - ignition
 
@@ -82,14 +82,6 @@
     msg: sha256sum of decompressed image mismatch - {{ decompressed_img.stat.checksum }} is different from {{ right_decompressed_chksum }}
   when: right_decompressed_chksum != decompressed_img.stat.checksum
   ignore_errors: "{{ ansible_check_mode }}"
-
-#- name: Create libguestfs container
-#  podman_image:
-#    name: guestfish
-#    path: "{{ playbook_dir }}"
-#    build:
-#      format: docker
-#  tags: guestfish_build
 
 - name: Inject ignition file
   become: false
