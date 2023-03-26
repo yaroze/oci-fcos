@@ -1,7 +1,7 @@
 
 
-![Docker-aarch64](https://github.com/yaroze/oci-fcos/actions/workflows/docker-aarch64.yml/badge.svg)
-![Docker-amd64](https://github.com/yaroze/oci-fcos/actions/workflows/docker-aarch64.yml/badge.svg)
+[![Docker-aarch64](https://github.com/yaroze/oci-fcos/actions/workflows/docker-aarch64.yml/badge.svg?branch=main)](https://github.com/yaroze/oci-fcos/actions/workflows/docker-aarch64.yml)/
+[![Docker-amd64](https://github.com/yaroze/oci-fcos/actions/workflows/docker-amd64.yml/badge.svg?branch=main)](https://github.com/yaroze/oci-fcos/actions/workflows/docker-amd64.yml)/
 
 # oci-fcos
 
