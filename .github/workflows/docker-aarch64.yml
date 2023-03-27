@@ -4,7 +4,7 @@ on:
   schedule:
     - cron: '0 0 * * *'
   push:
-    branches: [ "main", "gh_actions", "feat/*", "dev" ]
+    branches: [ "main", "gh_actions", "feat/*", "dev", "containers" ]
     tags: [ 'v*.*.*' ]
   pull_request:
     branches: [ "main" ]
@@ -49,7 +49,7 @@ jobs:
         id: build-and-push-latest
         uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
         with:
-          context: .
+          context: ./butane/
           push: ${{ github.event_name != 'pull_request' }}
           tags: ghcr.io/${{ github.repository_owner }}/guestfish:latest
           labels: ${{ steps.meta.outputs.labels }}
