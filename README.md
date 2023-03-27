@@ -1,5 +1,5 @@
-[![Docker-aarch64](https://github.com/yaroze/oci-fcos/actions/workflows/docker-aarch64.yml/badge.svg?branch=main)](https://github.com/yaroze/oci-fcos/actions/workflows/docker-aarch64.yml)
-[![Docker-amd64](https://github.com/yaroze/oci-fcos/actions/workflows/docker-amd64.yml/badge.svg?branch=main)](https://github.com/yaroze/oci-fcos/actions/workflows/docker-amd64.yml)
+[![Docker-aarch64](https://github.com/yaroze/oci-fcos/actions/workflows/docker-aarch64.yml/badge.svg?branch=documentation)](https://github.com/yaroze/oci-fcos/actions/workflows/docker-aarch64.yml)
+[![Docker-amd64](https://github.com/yaroze/oci-fcos/actions/workflows/docker-amd64.yml/badge.svg?branch=documentation)](https://github.com/yaroze/oci-fcos/actions/workflows/docker-amd64.yml)
 
 # oci-fcos
 
@@ -10,6 +10,7 @@
   - [FAQ](#faq)
     - [Why are you doing this?](#why-are-you-doing-this)
     - [Why Oracle Cloud? Did you turn to the dark side of the force?](#why-oracle-cloud-did-you-turn-to-the-dark-side-of-the-force)
+    - [No, seriously. The cheapest?](#no-seriously-the-cheapest)
     - [Don't you have anything better to do?](#dont-you-have-anything-better-to-do)
     - [You should be ashamed! Your code sucks! Why are you making this public?](#you-should-be-ashamed-your-code-sucks-why-are-you-making-this-public)
   - [TODO](#todo)
@@ -116,16 +117,32 @@ What other cloud provides does this [(**forever**)](https://docs.oracle.com/en-u
 
 Also, their block and object storage is quite cheap compared to AWS's. Take a look at [this](https://www.oracle.com/cloud/economics/).
 
-So, first reason is cost. I don't want to spend a shitload of money to support my personal projects, that won't be profitable for the time being. Also, my laptop runs on an ARM processor, so if I can use the same architecture on both sides, the better :)
+So, first reason is cost. I don't want to spend a shitload of money to support my personal hobbies that won't be profitable at least for the time being. Also, my laptop runs on an ARM processor, so if I can use the same architecture on both sides, the better :)
 
-Second reason is, I used to be an Oracle consultant. I did a ton of PL/SQL coding, Database Administration and performance tunning. I'd love to have a RAC at home, just to play with it, but you know... costs...  
+Second reason is, I used to be an Oracle consultant, but I never had the chance of trying out their cloud.  
+I did a ton of PL/SQL coding, Database 11g/12c Administration, performance tunning and worked a lot with WebLogic 11g/12c.
+
+I'd love to have a RAC at home, just to play with it, but you know... I don't have much tim€ for that :D
+
+
 So if I have the opportunity to have a small DBaaS, at least I can take that as an opportunity to learn APEX or have 20GB of storage for free.  
 
 I can also run an XE on a VM for cheap if I spin a burstable instance...
 
+Either way, like any business, they need to make money out of the services they provide, so... everyone's price list is public AFAIK, so there is choice.
+
+I'm not into doing the same for AWS or Azure, at least for now.
+
+
+### No, seriously. The cheapest?
+At least for this hobby project, yes!
+
+![costs](docs/costs.png)
+
+
 ### Don't you have anything better to do?
 Of course, I have many better things I could be doing, but the truth is you'll loose the momentum if you stop.  
-The world is transitioning to public clouds and I'm taking this as an opportunity to improve my Terraform and Ansible skills as well as containerization.
+The world is transitioning to public clouds and I'm taking this as an opportunity to improve my Terraform and Ansible skills as well as containerization and Git itself.
 
 ### You should be ashamed! Your code sucks! Why are you making this public?
 I'm not :). Yup, my code might suck.
