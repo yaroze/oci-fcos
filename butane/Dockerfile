@@ -7,8 +7,8 @@ WORKDIR /butane
 RUN git clone https://github.com/coreos/butane .
 RUN ./build_for_container
 RUN cp /butane/bin/container/butane /usr/bin/butane
-COPY butane/run.sh /usr/bin/run
-COPY butane/run.sh /usr/local/bin/run
+COPY run.sh /usr/bin/run
+COPY run.sh /usr/local/bin/run
 RUN chmod +x /usr/bin/run
 RUN chmod +x /usr/local/bin/run
 ENTRYPOINT ["/usr/bin/run"]
