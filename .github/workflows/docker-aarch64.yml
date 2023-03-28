@@ -10,7 +10,7 @@ on:
     branches: [ "main" ]
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository_owner }}/guestfish
+  IMAGE_NAME: ${{ github.repository_owner }}/oci-fcos
 jobs:
   build-aarch64:
     runs-on: ubuntu-latest
@@ -51,7 +51,7 @@ jobs:
         with:
           context: ./butane/
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/${{ github.repository_owner }}/guestfish:latest
+          tags: ghcr.io/${{ github.repository_owner }}/oci-fcos:latest
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -77,7 +77,7 @@ jobs:
         env:
           COSIGN_EXPERIMENTAL: "true"
 
-        run: echo "ghcr.io/${{ github.repository_owner }}/guestfish:latest" | xargs -I {} cosign sign {}@${{ steps.build-and-push-latest.outputs.digest }}
+        run: echo "ghcr.io/${{ github.repository_owner }}/oci-fcos:latest" | xargs -I {} cosign sign {}@${{ steps.build-and-push-latest.outputs.digest }}
 
       - name: Sign the published Docker image (testing)
         if: ${{ github.event_name != 'pull_request' && github.ref_name != 'main' }}
