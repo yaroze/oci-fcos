@@ -1,7 +1,13 @@
 - name: Get current Git branch
   shell: cd {{ playbook_dir }} && git branch --show-current
-  register: current_branch
+  register: container_tag
   check_mode: no
+  tags: test
+
+- name: Set tag to "latest" when branch is "main"
+  set_fact:
+    container_tag: "latest"
+  when: container_tag == "main"
 
 - name: Generate an ignition file
   become: false
@@ -10,12 +16,12 @@
   podman_container:
     name: ignition
     image: quay.io/coreos/butane:release
-    command: ["--pretty","/tmp/butane.bu","-o","/tmp/config.ign"]
+    command: ["--pretty","/workdir/butane.bu","-o","/workdir/config.ign"]
     state: started
     recreate: true
     auto_remove: true
     volumes:
-      - "{{ playbook_dir }}:/tmp:z"
+      - "{{ playbook_dir }}:/workdir:z"
   tags:
     - ignition
 
@@ -77,31 +83,24 @@
   when: right_decompressed_chksum != decompressed_img.stat.checksum
   ignore_errors: "{{ ansible_check_mode }}"
 
-#- name: Create libguestfs container
-#  podman_image:
-#    name: guestfish
-#    path: "{{ playbook_dir }}"
-#    build:
-#      format: docker
-#  tags: guestfish_build
-
 - name: Inject ignition file
   become: false
   collections:
     - containers.podman
   podman_container:
     name: guestfish
-    image: ghcr.io/yaroze/guestfish:{{ current_branch.stdout }}
-    workdir: /tmp
-    command: ["/tmp/guestfish.sh"]
+    image: ghcr.io/yaroze/guestfish:{{ container_tag.stdout | replace( "/", "-") }}
+    workdir: /image
+    command: ["/image/guestfish.sh"]
     state: started
     recreate: true
     auto_remove: true
     detach: false
     volumes:
-      - "{{ playbook_dir }}:/tmp:z"
+      - "{{ playbook_dir }}:/image:z"
   tags:
     - guestfish_run
+    - test
 
 - name: Apply Terraform configuration
   terraform:
