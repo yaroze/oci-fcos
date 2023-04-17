@@ -4,17 +4,17 @@
 Main  
 [![Docker-aarch64](https://github.com/yaroze/oci-fcos/actions/workflows/docker-aarch64.yml/badge.svg?branch=main)](https://github.com/yaroze/oci-fcos/actions/workflows/docker-aarch64.yml)
 [![Docker-amd64](https://github.com/yaroze/oci-fcos/actions/workflows/docker-amd64.yml/badge.svg?branch=main)](https://github.com/yaroze/oci-fcos/actions/workflows/docker-amd64.yml)
-[![GitHub Super-Linter](https://github.com/yaroze/oci-fcos//workflows/Lint%20Code%20Base/badge.svg?branch=main)](https://github.com/yaroze/oci-fcos/actions/workflows/super-linter.yml)
+
 
 Actions  
 [![Docker-aarch64](https://github.com/yaroze/oci-fcos/actions/workflows/docker-aarch64.yml/badge.svg?branch=gh_actions)](https://github.com/yaroze/oci-fcos/actions/workflows/docker-aarch64.yml)
 [![Docker-amd64](https://github.com/yaroze/oci-fcos/actions/workflows/docker-amd64.yml/badge.svg?branch=gh_actions)](https://github.com/yaroze/oci-fcos/actions/workflows/docker-amd64.yml)
-[![GitHub Super-Linter](https://github.com/yaroze/oci-fcos//workflows/Lint%20Code%20Base/badge.svg?branch=actions)](https://github.com/yaroze/oci-fcos/actions/workflows/super-linter.yml)
+
 
 Containers  
 [![Docker-aarch64](https://github.com/yaroze/oci-fcos/actions/workflows/docker-aarch64.yml/badge.svg?branch=containers)](https://github.com/yaroze/oci-fcos/actions/workflows/docker-aarch64.yml)
 [![Docker-amd64](https://github.com/yaroze/oci-fcos/actions/workflows/docker-amd64.yml/badge.svg?branch=containers)](https://github.com/yaroze/oci-fcos/actions/workflows/docker-amd64.yml)
-[![GitHub Super-Linter](https://github.com/yaroze/oci-fcos//workflows/Lint%20Code%20Base/badge.svg?branch=containers)](https://github.com/yaroze/oci-fcos/actions/workflows/super-linter.yml)
+
 
 
 - [oci-fcos](#oci-fcos)
