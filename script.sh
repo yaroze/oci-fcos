@@ -1,16 +1,13 @@
 #!/bin/bash
+
 check_status(){
-        if [ $? -eq 0 ]
-    then 
-        echo "👍 OK!
-"
+    if [ $? -eq 0 ]; then 
+        echo "👍 OK!"
     else
-        echo "❌ Failed!
-"
+        echo "❌ Failed!"
         exit 1
     fi
 }
-
 
 get_sha256sum(){
     SHA=($(sha256sum "$1"))
@@ -65,12 +62,12 @@ for ARCH_TYPE in "${ARCHITECTURES[@]}"; do
         true
         check_status
     fi
+
+    echo "Building Docker image... if the image isn't built already or if guestfish.sh isn't updated, this might take a while... 🐳"
+    echo -n "Logs are under $PWD/build_guestfish.log..."
+    podman build . -t guestfish > build_guestfish.log 2>&1
+    check_status
+
+    echo "Launching podman container to inject ignition file... ⏳"
+    podman run -v "$PWD:/root/fcos:z" -w /root/fcos guestfish /root/fcos/guestfish.sh fcos_$ARCH_TYPE.qcow2
 done
-
-echo "Building Docker image... if the image isn't built already or if guestfish.sh isn't updated, this might take a while... 🐳"
-echo -n "Logs are under $PWD/build_guestfish.log..."
-podman build . -t guestfish > build_guestfish.log 2>&1
-check_status
-
-echo "Launching podman container to inject ignition file... ⏳"
-podman run -v "$PWD:/root:z" -w /root/fcos guestfish /root/guestfish.sh
