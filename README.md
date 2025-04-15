@@ -113,7 +113,17 @@ The code is constantly changing and new ideas pop up every now and then. So the 
 
 One of the ideas is to containerize everything, including Terraform, Ansible and OCI client, so that it gets (much) easier to use and distro-agnostic, but for now, just install the prerequisites, configure OCI client, run the Ansible playbook and it will do everything it needs. If it doesn't, please open an issue.
 
+```
+Usage:
+ ./script.sh [aarch64|amd64|both]
 
+Examples:
+ ./script.sh aarch64
+ ./script.sh amd64
+ ./script.sh both
+ ```
+
+ This will generate a `fcos_[aarch64|amd64].qcow2` ready to be uploaded to OCI.
 
 ## FAQ
 
@@ -144,11 +154,11 @@ I did a ton of PL/SQL coding, Database 11g/12c Administration, performance tunni
 I'd love to have a RAC at home, just to play with it, but you know... I don't have much tim€ for that :D
 
 
-So if I have the opportunity to have a small DBaaS, at least I can take that as an opportunity to learn APEX or have 20GB of storage for free.  
+So if I have the opportunity to have a small DBaaS, at least I can take that as an opportunity to learn APEX and have 20GB of storage for free.  
 
-I can also run an XE on a VM for cheap if I spin a burstable instance...
+I can also run an XE on a VM for very cheap if I spin a burstable instance...
 
-Either way, like any business, they need to make money out of the services they provide, so... everyone's price list is public AFAIK, so there is choice.
+Either way, like any business, they need to make money out of the services they provide, so... it's kinda easy to start spending a few Euros every month, even on OCI.
 
 I'm not into doing the same for AWS or Azure, at least for now.
 
@@ -176,5 +186,5 @@ Now, it's my turn: Why are you here on GitHub?
 - [x] Create terraform to upload this to OCI
 - [x] Create Ansible to run the image related stuff
 - [ ] Deploy with GitHub Actions
-- [ ] Do some proper documentation (requirements, etc)...
-- [ ] Containerize!!!
+- [ ] Do some proper documentation (requirements, etc)... - this will never be done...
+- [ ] ~~***Containerize everything***~~ - Probably won't do. Unless someone asks :)
