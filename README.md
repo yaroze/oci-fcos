@@ -33,44 +33,10 @@ $ podman -v
 podman version 3.4.2
 ```
 
-```bash
-$ oci -v
-3.9.0
-```
-
-```bash
-$ terraform version
-Terraform v1.4.2
-on linux_arm64
-+ provider registry.terraform.io/hashicorp/local v2.4.0
-+ provider registry.terraform.io/oracle/oci v4.112.0
-```
-
-and
-
-```bash
-$ ansible --version
-ansible 2.9.27
-  config file = /etc/ansible/ansible.cfg
-  configured module search path = ['XXX']
-  ansible python module location = XXX
-  executable location = XXX
-  python version = 3.6.8 (default, Nov 10 2021, 06:50:25) [GCC 8.5.0 20210514 (Red Hat 8.5.0-3.0.2)]
-```
-
-Additionally, the following collection should be installed:
-`containers.podman.podman_container`
-
-Deploy it with:
-`ansible-galaxy collection install containers.podman`
-
-I developed it on an Oracle Linux 8.5 VM, so it should work fine on Red Hat or maybe even Fedora. I don't know about Debian and derivatives.
-
 ## Usage
 
 The code is constantly changing and new ideas pop up every now and then. So the usage might change every now and then.
 
-One of the ideas is to containerize everything, including Terraform, Ansible and OCI client, so that it gets (much) easier to use and distro-agnostic, but for now, just install the prerequisites, configure OCI client, run the Ansible playbook and it will do everything it needs. If it doesn't, please open an issue.
 
 ```
 Usage:
