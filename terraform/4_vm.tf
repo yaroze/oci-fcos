@@ -10,7 +10,7 @@ resource "oci_core_instance" "fcos_instance" {
   }
 
   metadata = {
-    ssh_authorized_keys = "ssh-rsa ***REMOVED***"
+    ssh_authorized_keys = "***REMOVED***"
   }
 
   source_details {
