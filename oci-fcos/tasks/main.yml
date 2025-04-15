@@ -1,0 +1,108 @@
+- name: Get current Git branch
+  shell: cd {{ playbook_dir }} && git branch --show-current
+  register: container_tag
+  check_mode: no
+  tags: test
+
+- name: Set tag to "latest" when branch is "main"
+  set_fact:
+    container_tag: "latest"
+  when: container_tag == "main"
+
+- name: Generate an ignition file
+  become: false
+  collections:
+    - containers.podman
+  podman_container:
+    name: ignition
+    image: quay.io/coreos/butane:release
+    command: ["--pretty","/workdir/butane.bu","-o","/workdir/config.ign"]
+    state: started
+    recreate: true
+    auto_remove: true
+    volumes:
+      - "{{ playbook_dir }}:/workdir:z"
+  tags:
+    - ignition
+
+
+- name: Get URL for stable images
+  uri:
+    url: https://builds.coreos.fedoraproject.org/streams/stable.json
+    method: GET
+  register: stable_list
+  tags: url
+
+- name: Set facts
+  set_fact:
+    right_compressed_chksum: "{{ stable_list.json | json_query('architectures.aarch64.artifacts.qemu.formats.\"qcow2.xz\".disk.sha256') }}"
+    right_decompressed_chksum: "{{ stable_list.json | json_query('architectures.aarch64.artifacts.qemu.formats.\"qcow2.xz\".disk.\"uncompressed-sha256\"') }}"
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Check if there is a decompressed image already and has the correct cksum
+  stat:
+    path: "{{ playbook_dir }}/fcos.qcow2"
+    get_checksum: true
+    checksum_algorithm: sha256
+  register: decompressed_img
+
+- name: Test if compressed image exists and is of right cksum
+  stat:
+    path: "fcos.qcow2.xz"
+    get_checksum: true
+    checksum_algorithm: sha256
+  register: compressed_img
+
+- name: Get compressed image if it doesn't already exist
+  get_url:
+    url: "{{ stable_list.json | json_query('architectures.aarch64.artifacts.qemu.formats.\"qcow2.xz\".disk.location') }}"
+    dest: "{{ playbook_dir }}/fcos.qcow2.xz"
+    checksum: "sha256:{{ right_compressed_chksum }}"
+    mode: '0600'
+    validate_certs: yes
+  register: download_result
+  when:
+    # Run only if we have a wrong sha256 or if we dong have any image
+    - (compressed_img.stat.exists and compressed_img.stat.checksum != right_compressed_chksum) or
+      (not compressed_img.stat.exists and not decompressed_img.stat.exists)
+
+- name: Decompress image 
+  shell: xz -d "{{ playbook_dir }}/fcos.qcow2.xz"
+  when: (not decompressed_img.stat.exists)
+
+- name: Get sha256sum of decompressed image
+  stat:
+    path: "{{ playbook_dir }}/fcos.qcow2"
+    get_checksum: true
+    checksum_algorithm: sha256
+  register: decompressed_img
+
+- name: Check sha256sum of decompressed image
+  fail:
+    msg: sha256sum of decompressed image mismatch - {{ decompressed_img.stat.checksum }} is different from {{ right_decompressed_chksum }}
+  when: right_decompressed_chksum != decompressed_img.stat.checksum
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Inject ignition file
+  become: false
+  collections:
+    - containers.podman
+  podman_container:
+    name: guestfish
+    image: ghcr.io/yaroze/guestfish:{{ container_tag.stdout | replace( "/", "-") }}
+    workdir: /image
+    command: ["/image/guestfish.sh"]
+    state: started
+    recreate: true
+    auto_remove: true
+    detach: false
+    volumes:
+      - "{{ playbook_dir }}:/image:z"
+  tags:
+    - guestfish_run
+    - test
+
+- name: Apply Terraform configuration
+  terraform:
+    project_path: "{{ playbook_dir }}/terraform"
+    state: present
