@@ -1,5 +1,5 @@
 - name: Get current Git branch
-  shell: cd {{ playbook_dir }} && git branch --show-current
+  shell: cd {{ playbook_dir }} && git rev-parse HEAD
   register: container_tag
   check_mode: no
   tags: test
@@ -8,23 +8,6 @@
   set_fact:
     container_tag: "latest"
   when: container_tag == "main"
-
-- name: Generate an ignition file
-  become: false
-  collections:
-    - containers.podman
-  podman_container:
-    name: ignition
-    image: quay.io/coreos/butane:release
-    command: ["--pretty","/workdir/butane.bu","-o","/workdir/config.ign"]
-    state: started
-    recreate: true
-    auto_remove: true
-    volumes:
-      - "{{ playbook_dir }}:/workdir:z"
-  tags:
-    - ignition
-
 
 - name: Get URL for stable images
   uri:
@@ -88,21 +71,22 @@
   collections:
     - containers.podman
   podman_container:
-    name: guestfish
-    image: ghcr.io/yaroze/guestfish:{{ container_tag.stdout | replace( "/", "-") }}
-    workdir: /image
-    command: ["/image/guestfish.sh"]
+    name: oci-fcos
+    image: ghcr.io/yaroze/oci-fcos:{{ container_tag.stdout | replace( "/", "-") }}
+    command: ["-a ignition.ign fcos.qcow2"]
     state: started
     recreate: true
     auto_remove: true
     detach: false
+    rm: true
     volumes:
-      - "{{ playbook_dir }}:/image:z"
+      - "{{ playbook_dir }}:/oci-fcos:z"
   tags:
     - guestfish_run
     - test
 
-- name: Apply Terraform configuration
-  terraform:
-    project_path: "{{ playbook_dir }}/terraform"
-    state: present
+#- name: Apply Terraform configuration
+#  terraform:
+#    project_path: "{{ playbook_dir }}/terraform"
+#    state: present
+  

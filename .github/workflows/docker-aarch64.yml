@@ -4,13 +4,13 @@ on:
   schedule:
     - cron: '0 0 * * *'
   push:
-    branches: [ "main", "gh_actions", "feat/*", "dev" ]
+    branches: [ "main", "gh_actions", "feat/*", "dev", "containers" ]
     tags: [ 'v*.*.*' ]
   pull_request:
     branches: [ "main" ]
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository_owner }}/guestfish
+  IMAGE_NAME: ${{ github.repository_owner }}/oci-fcos
 jobs:
   build-aarch64:
     runs-on: ubuntu-latest
@@ -49,9 +49,9 @@ jobs:
         id: build-and-push-latest
         uses: docker/build-push-action@v3
         with:
-          context: .
+          context: ./butane/
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/${{ github.repository_owner }}/guestfish:latest
+          tags: ghcr.io/${{ github.repository_owner }}/oci-fcos:latest
           labels: ${{ steps.meta.outputs.labels }}
           # cache-from: type=gha
           # cache-to: type=gha,mode=max
