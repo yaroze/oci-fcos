@@ -1,7 +1,7 @@
 #!/bin/bash
+echo "Please wait... discovering the qcow2 image with virt-filesystems..."
 fs_boot_path=$(virt-filesystems -a $1 -l | grep boot | awk -F ' ' '{print $1}')
 
-cd /image
 /usr/bin/guestfish <<EOF
 echo "Adding qcow2 file"
 add $1
