@@ -14,3 +14,7 @@ config.ign
 oci-fcos/inventory.yml
 terraform/inventory.yml
 butane.bu
+butane.bu
+.infracost/pricing.gob
+.infracost/terraform_modules/manifest-1b1ed905d54c18e3dd8828986c14be17.json
+.vscode/launch.json
